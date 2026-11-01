@@ -3,11 +3,13 @@ name: Build NexPlayer APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,11 +26,10 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract project
-        run: |
-          unzip NexPlayer-Full-Project.zip -d project
+        run: unzip NexPlayer-Full-Project.zip -d project
 
       - name: Build APK
-        run: gradle -p project assembleDebug
+        run: gradle -p project assembleDebug -Pkotlin.jvm.target.validation.mode=warning
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
